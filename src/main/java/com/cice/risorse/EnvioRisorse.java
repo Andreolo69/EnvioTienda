@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cice.entity.EntityEnvio;
@@ -30,7 +31,7 @@ public class EnvioRisorse {
 	@RequestMapping(method=RequestMethod.GET, path="/envios")
 	public List<EnvioDto> getAllPedidos() {
 		List<EnvioDto> listaEnvios=null;
-		envioService.findAllEnvio();
+		listaEnvios = envioService.findAllEnvio();
 		return listaEnvios;
 	}
 	@RequestMapping(method=RequestMethod.GET, path="/envios/{id}")
@@ -44,11 +45,12 @@ public class EnvioRisorse {
 	}
 	
 	@RequestMapping(method=RequestMethod.PUT, path="/envios/{id}")
-	public void upDatePedidos() {
+	public void upDatePedidos(@PathVariable(name="id") String id,@RequestBody EntityEnvio entityEnvio) {
+		envioService.actualizarEnvio(entityEnvio);
 		
 	}
 	@RequestMapping(method=RequestMethod.DELETE, path="/envios/{id}")
-	public void deletePedidos() {
-		
+	public void deletePedidos(@PathVariable Long id) {
+		envioService.eliminar(id);
 	}
 }

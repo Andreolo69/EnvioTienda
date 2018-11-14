@@ -5,13 +5,11 @@ import javax.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name="Pedidos")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-
+@Table(name="envios")
 public class EntityEnvio {
 
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String passWord;
 	private String NombreUsuario;

@@ -7,47 +7,54 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cice.Repositorio.RepositorioPedido;
+import com.cice.Repositorio.RepositorioEnvio;
 import com.cice.convertitore.ConverterEnvio;
 import com.cice.entity.EntityEnvio;
-import com.cice.entity.EnvioEntity;
+
 import com.cice.envioDto.EnvioDto;
-import com.cice.gestionusuarios.web.dto.UsuarioDTO;
+
 
 @Service
 public class EnvioService {
 
 	@Autowired
-	RepositorioPedido repositorioPedido;
+	private RepositorioEnvio repositorioEnvio;
 	
 	@Autowired
-	ConverterEnvio converterEnvio;
+	private ConverterEnvio converterEnvio;
 	
 	public Long crearEnvio(EntityEnvio entita){ // POST POST
 		Long idPedido=null;
-		EntityEnvio save=	repositorioPedido.save(entita);
+		EntityEnvio save=repositorioEnvio.save(entita);
 	idPedido=save.getId();
 		return idPedido;
 	}
 	
-	public List<EnvioDto> findAllEnvio() {
-		List<EnvioDto> envioDtoList=null;
-		
-List<EntityEnvio> envioEntityList=repositorioPedido.findAll();
-envioDtoList=new ArrayList<EnvioDto>();
-		
+	public List<EnvioDto> findAllEnvio() {//GET GET
+		List<EnvioDto> envioDtoList=null;		
+List<EntityEnvio> envioEntityList=repositorioEnvio.findAll();
+envioDtoList=new ArrayList<EnvioDto>();		
 	for(EntityEnvio entityEnvio: envioEntityList) {
 		envioDtoList.add(converterEnvio.convertEntityToTdo(entityEnvio));
 	}		
 		return envioDtoList;
 	}
 	
-	public Optional<EnvioDto> findEnvioById(Long idEnvio){
+	public Optional<EnvioDto> findEnvioById(Long idEnvio){//GETID GETID GETID
 	Optional<EnvioDto> envioDtoOptional=Optional.empty();
-	Optional<EntityEnvio> entityOptional=repositorioPedido.findById(idEnvio);
+	Optional<EntityEnvio> entityOptional=repositorioEnvio.findById(idEnvio);
 	if(entityOptional.isPresent()) {
 		envioDtoOptional=Optional.of(converterEnvio.convertEntityToTdo(entityOptional.get()));
 	}
 		return envioDtoOptional;
+	}
+	
+	public void actualizarEnvio(EntityEnvio entityEnvio) {
+		repositorioEnvio.save(entityEnvio);		
+	}
+	
+	public Long eliminar(Long id) {
+		repositorioEnvio.deleteById(id);
+		return id;
 	}
 }
